@@ -1,23 +1,87 @@
 <template>
   <div class="index-wrap">
-      <div class="index-left">
-          <div class="index-left-block">
+    <!-- 左侧导航开始 -->
+    <div class="index-left">
+        <!-- 左侧菜单开始 -->
+        <div class="index-left-block">
              <h2>全部产品</h2>
-             <div v-for="product in productList">
+             <template v-for="product in productList">
                  <h3>{{product.title}}</h3>
                  <ul v-for="item in product.list">
-                     <li><a :href="item.url">{{item.name}}</a></li>
+                     <li>
+                       <a :href="item.url">{{item.name}}</a>
+                       <span v-if="item.hot" class="hot-tag">HOT</span>
+                       </li>
                 </ul>
-             </div>
-          </div>
-      </div>
+               <div class="hr"></div>
+             </template>
+        </div>
+        <!-- 左侧菜单结束 -->
 
+        <!-- 左侧最新消息开始 -->
+        <div class="index-left-block lastest-news">
+            <h2>最新消息</h2>
+            <ul>
+              <li v-for="item in newsList">
+                <a :href="item.url" class="new-item">{{ item.title }}</a>
+              </li>
+            </ul>
+        </div>
+        <!-- 左侧最新消息结束 -->
+    </div>
+    <!-- 左侧导航结束 -->
+    <!--右侧内容区开始-->
+    <div class="index-right">
+      <div class="index-board-list">
+        <div class="index-board-item" v-for="(item,index) in boardList" :class="[{'line-last' : index % 2 !==0},'index-board-'+item.id]">
+          <div class="index-board-item-inner" >
+            <h2>{{item.title}}</h2>
+            <p>{{item.description}}</p>
+            <div class="index-board-button">
+              <router-link class="button" :to="{path:'detail/' + item.toKey}">立即购买</router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--右侧内容区结束-->
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      boardList: [
+        {
+          title: "开放产品",
+          description: "开放产品是一款开放产品",
+          id: "car",
+          toKey: "analysis",
+          saleout: false
+        },
+        {
+          title: "品牌营销",
+          description: "品牌营销帮助你的产品更好地找到定位",
+          id: "earth",
+          toKey: "count",
+          saleout: false
+        },
+        {
+          title: "使命必达",
+          description: "使命必达快速迭代永远保持最前端的速度",
+          id: "loud",
+          toKey: "forecast",
+          saleout: true
+        },
+        {
+          title: "勇攀高峰",
+          description: "帮你勇闯高峰，到达事业的顶峰",
+          id: "hill",
+          toKey: "publish",
+          saleout: false
+        }
+      ],
+      newsList: [],
       productList: {
         pc: {
           title: "PC产品",
